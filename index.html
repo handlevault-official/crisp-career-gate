@@ -470,18 +470,23 @@
             if (step > 1) { step--; renderQuestion(); }
         }
 
+            <!-- Dito nagtatapos ang UI / HTML elements mo -->
+
+    <!-- 1. Dito mo nilagay ang function mo directly sa index.html -->
+    <script>
         function showSuccess() {
             document.getElementById('stepGate').classList.add('hidden');
-
-            document.getElementById('resName').innerText = candidateData.name;
+            
             document.getElementById('resRole').innerText = candidateData.role;
             document.getElementById('resDate').innerText = candidateData.startDate || 'Immediate';
             document.getElementById('resCode').innerText = 'CRISP-OFFER-' + Math.random().toString(36).substring(2, 7).toUpperCase();
             
             document.getElementById('stepPass').classList.remove('hidden');
         }
+    </script>
 
-            <!-- Script para ikonekta ang logic mula sa repo.js -->
+    <!-- 2. Tapos nandyan pa rin ang repo.js para sa iba pang logic -->
     <script src="repo.js"></script>
+    
 </body>
 </html>
