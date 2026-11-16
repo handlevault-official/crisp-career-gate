@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crisp Career Gate | Secure Job Offer</title>
+    <title>Crisp Career Gate | Two-Sided Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -52,7 +52,7 @@
 
         .container {
             width: 100%;
-            max-width: 660px;
+            max-width: 680px;
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 20px;
@@ -63,7 +63,6 @@
             overflow: hidden;
         }
 
-        /* Top Bar Controls */
         .top-bar {
             display: flex;
             justify-content: space-between;
@@ -79,79 +78,99 @@
             color: var(--accent);
         }
 
-        .theme-toggle {
+        .controls-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-toggle {
             background: var(--input-bg);
             border: 1px solid var(--border-color);
             color: var(--text-main);
-            padding: 8px 14px;
+            padding: 8px 12px;
             border-radius: 20px;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 500;
             cursor: pointer;
         }
 
-        .theme-toggle:hover {
+        .btn-toggle:hover {
             border-color: var(--accent);
         }
 
         h1 {
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 700;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
             color: var(--text-main);
         }
 
         p {
             color: var(--text-muted);
-            font-size: 17px;
-            margin-bottom: 28px;
+            font-size: 16px;
+            margin-bottom: 24px;
             line-height: 1.6;
         }
 
-        /* Gate Form */
-        .gate-form {
+        /* Form Controls */
+        .form-grid {
             display: flex;
             flex-direction: column;
             gap: 16px;
+            text-align: left;
         }
 
-        input[type="text"] {
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        input[type="text"], textarea {
             width: 100%;
-            padding: 16px 20px;
+            padding: 14px 18px;
             background: var(--input-bg);
             border: 1px solid var(--input-border);
             border-radius: 10px;
             color: var(--text-main);
-            font-size: 17px;
+            font-size: 16px;
             outline: none;
-            text-align: center;
         }
 
-        input[type="text"]:focus {
+        input[type="text"]:focus, textarea:focus {
             border-color: var(--accent);
         }
 
-        button {
+        textarea {
+            resize: vertical;
+            height: 90px;
+        }
+
+        button.primary-btn {
             background-color: var(--accent);
             color: #ffffff;
             font-weight: 600;
             padding: 16px 20px;
             border: none;
             border-radius: 10px;
-            font-size: 17px;
+            font-size: 16px;
             cursor: pointer;
+            width: 100%;
             transition: background-color 0.2s, transform 0.1s;
+            margin-top: 10px;
         }
 
-        button:hover {
+        button.primary-btn:hover {
             background-color: var(--accent-hover);
         }
 
-        button:active {
-            transform: scale(0.98);
-        }
-
-        /* Animated Mailbox / Envelope Container */
+        /* Envelope Animation */
         .envelope-container {
             margin: 35px auto;
             width: 220px;
@@ -190,7 +209,6 @@
             z-index: 1;
         }
 
-        /* Offer Letter Content */
         .hidden {
             display: none !important;
         }
@@ -229,7 +247,6 @@
             margin-bottom: 16px;
             text-align: left;
             color: var(--text-main);
-            font-size: 16px;
         }
 
         .actions {
@@ -241,6 +258,11 @@
             background-color: var(--accent);
             color: #ffffff;
             flex: 1;
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
         }
 
         .btn-decline {
@@ -248,115 +270,207 @@
             border: 1px solid var(--border-color);
             color: var(--text-muted);
             flex: 1;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
         }
 
         .btn-decline:hover {
             border-color: #ef4444;
             color: #ef4444;
-            background-color: rgba(239, 68, 68, 0.05);
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- Top Navigation / Theme Toggle -->
+        <!-- Top Navigation -->
         <div class="top-bar">
-            <div class="brand">Crisp Career Suite</div>
-            <button class="theme-toggle" onclick="toggleTheme()">☀️ / 🌙 Theme</button>
-        </div>
-
-        <!-- STEP 1: Passcode / Access Gate -->
-        <div id="gate-section">
-            <h1>Secure Offer Portal</h1>
-            <p>Enter your confidential HR Passcode (e.g., <strong>CRISP-2026</strong>) to access your official onboarding document.</p>
-            
-            <div class="gate-form">
-                <input type="text" id="passcode" placeholder="Enter Access Code..." required>
-                <button onclick="verifyCode()">Unlock Secure Mailbox 🔓</button>
+            <div class="brand" id="appBrand">Crisp Career Gate</div>
+            <div class="controls-group">
+                <button class="btn-toggle" id="switchViewBtn" onclick="switchView()">Switch to HR Sender Mode ⚙️</button>
+                <button class="btn-toggle" onclick="toggleTheme()">☀️ / 🌙</button>
             </div>
         </div>
 
-        <!-- STEP 2: Animated Envelope / Mailbox Reveal -->
-        <div id="envelope-section" class="hidden">
-            <h1>Mailbox Unlocked</h1>
-            <p>Your official encrypted parcel has arrived. Click the envelope below to open it.</p>
+        <!-- ================= SIDE 1: HR SENDER / GENERATOR DASHBOARD ================= -->
+        <div id="sender-dashboard">
+            <h1>HR Offer Creator</h1>
+            <p>Configure the candidate details and secret access passcode to generate a secure job offer portal.</p>
             
-            <div class="envelope-container" id="envelopeBox" onclick="openEnvelope()">
+            <div class="form-grid">
+                <div class="field-group">
+                    <label>Candidate Full Name</label>
+                    <input type="text" id="cfgCandidate" value="Alex Johnson" placeholder="e.g. Maria Santos">
+                </div>
+                <div class="field-group">
+                    <label>Position Title</label>
+                    <input type="text" id="cfgPosition" value="Senior Remote Developer" placeholder="e.g. UI/UX Designer">
+                </div>
+                <div class="field-group">
+                    <label>Secret Passcode (For Candidate Verification)</label>
+                    <input type="text" id="cfgCode" value="CRISP-2026" placeholder="e.g. HIRE-9921">
+                </div>
+                <div class="field-group">
+                    <label>Custom Welcome / Offer Message</label>
+                    <textarea id="cfgMessage">We are thrilled to extend this formal invitation for you to join our core engineering ecosystem. Your technical alignment and execution speed stood out across all evaluation tiers.</textarea>
+                </div>
+                <button class="primary-btn" onclick="launchCandidatePortal()">Generate & Test Candidate Portal 🚀</button>
+            </div>
+        </div>
+
+
+        <!-- ================= SIDE 2: CANDIDATE RECEIVER VIEW ================= -->
+        
+        <!-- Step A: Passcode Gate -->
+        <div id="candidate-gate" class="hidden">
+            <h1>Secure Offer Portal</h1>
+            <p>Hello <span id="displayCandidateName" style="color: var(--accent); font-weight: 600;"></span>. Enter your assigned confidential HR Passcode to unlock your official onboarding document.</p>
+            
+            <div class="form-grid">
+                <input type="text" id="inputPasscode" placeholder="Enter Access Code..." style="text-align: center;">
+                <button class="primary-btn" onclick="verifyCandidateCode()">Unlock Secure Mailbox 🔓</button>
+            </div>
+        </div>
+
+        <!-- Step B: Animated Mailbox Reveal -->
+        <div id="candidate-envelope" class="hidden">
+            <h1>Mailbox Unlocked</h1>
+            <p>Your official encrypted parcel has arrived. Tap the envelope below to open it.</p>
+            
+            <div class="envelope-container" id="envelopeBox" onclick="openCandidateEnvelope()">
                 <div class="envelope-flap"></div>
                 <div class="envelope-body">
-                    <div style="text-align: center; padding-top: 40px; color: var(--accent); font-weight: 700; font-size: 14px;">OFFICIAL OFFER</div>
+                    <div style="text-align: center; padding-top: 40px; color: var(--accent); font-weight: 700; font-size: 13px;">OFFICIAL OFFER</div>
                 </div>
             </div>
-            <p style="font-size: 14px; color: var(--text-muted); margin-top: 15px;">Tap envelope to extract contents</p>
+            <p style="font-size: 13px; color: var(--text-muted); margin-top: 15px;">Tap envelope to extract contents</p>
         </div>
 
-        <!-- STEP 3: The Offer Letter with Accept / Decline -->
-        <div id="offer-section" class="hidden offer-content">
+        <!-- Step C: The Actual Offer Letter -->
+        <div id="candidate-letter" class="hidden offer-content">
             <div class="offer-header">
                 <div style="font-size: 13px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Confidential Onboarding Package</div>
-                <div class="offer-title">Position: Senior Core Developer / Tech Lead</div>
+                <div class="offer-title" id="displayPositionTitle">Position: Senior Core Developer</div>
             </div>
             
             <div class="offer-body">
-                <p><strong>Congratulations!</strong> We are delighted to extend this formal invitation for you to join our core engineering ecosystem.</p>
-                <p>Your technical alignment, vision, and execution speed stood out across all evaluation tiers. Enclosed are your terms of engagement and remote ecosystem privileges.</p>
+                <p>Dear <span id="letterCandidateName" style="color: var(--text-main); font-weight: 600;"></span>,</p>
+                <p id="displayCustomMessage">Loading offer details...</p>
                 <p>Please review the terms and select your response below to finalize your status.</p>
             </div>
 
             <div class="actions">
-                <button class="btn-accept" onclick="handleResponse('accept')">Accept Offer 🚀</button>
-                <button class="btn-decline" onclick="handleResponse('decline')">Request Discussion 💬</button>
+                <button class="btn-accept" onclick="handleCandidateResponse('accept')">Accept Offer 🚀</button>
+                <button class="btn-decline" onclick="handleCandidateResponse('decline')">Request Discussion 💬</button>
             </div>
         </div>
 
-        <!-- STEP 4: Success / Response Screen -->
-        <div id="response-section" class="hidden" style="padding: 25px 0;">
+        <!-- Step D: Final Confirmation Screen -->
+        <div id="candidate-response" class="hidden" style="padding: 25px 0;">
             <h1 id="responseTitle" style="margin-bottom: 14px;">Thank You!</h1>
-            <p id="responseDesc" style="color: var(--text-main); font-size: 17px; margin-bottom: 25px;"></p>
-            <button onclick="location.reload()" style="background-color: var(--input-bg); color: var(--text-main); border: 1px solid var(--border-color);">Lock Portal Again 🔒</button>
+            <p id="responseDesc" style="color: var(--text-main); font-size: 16px; margin-bottom: 25px;"></p>
+            <button class="btn-toggle" style="width: 100%; padding: 14px;" onclick="resetToSender()">Back to HR Dashboard ⚙️</button>
         </div>
+
     </div>
 
     <script>
+        // Global State for configured offer
+        let currentOffer = {
+            candidate: "Alex Johnson",
+            position: "Senior Remote Developer",
+            code: "CRISP-2026",
+            message: "We are thrilled to extend this formal invitation for you to join our core engineering ecosystem. Your technical alignment and execution speed stood out across all evaluation tiers."
+        };
+
+        let activeMode = 'sender'; // 'sender' or 'candidate'
+
         function toggleTheme() {
             document.body.classList.toggle('light-mode');
         }
 
-        function verifyCode() {
-            const code = document.getElementById('passcode').value.trim();
-            if(code === "") {
-                alert("Please enter a valid access code.");
+        function switchView() {
+            if(activeMode === 'sender') {
+                launchCandidatePortal();
+            } else {
+                resetToSender();
+            }
+        }
+
+        function launchCandidatePortal() {
+            // Grab values from HR Dashboard
+            currentOffer.candidate = document.getElementById('cfgCandidate').value.trim() || "Candidate";
+            currentOffer.position = document.getElementById('cfgPosition').value.trim() || "Team Member";
+            currentOffer.code = document.getElementById('cfgCode').value.trim() || "1234";
+            currentOffer.message = document.getElementById('cfgMessage').value.trim() || "Welcome aboard!";
+
+            // Update Candidate view elements
+            document.getElementById('displayCandidateName').innerText = currentOffer.candidate;
+            document.getElementById('letterCandidateName').innerText = currentOffer.candidate;
+            document.getElementById('displayPositionTitle').innerText = "Position: " + currentOffer.position;
+            document.getElementById('displayCustomMessage').innerText = currentOffer.message;
+
+            // Switch UI state
+            activeMode = 'candidate';
+            document.getElementById('switchViewBtn').innerText = "Switch to HR Sender Mode ⚙️";
+            document.getElementById('appBrand').innerText = "Crisp Candidate Portal";
+
+            document.getElementById('sender-dashboard').classList.add('hidden');
+            document.getElementById('candidate-gate').classList.remove('hidden');
+        }
+
+        function verifyCandidateCode() {
+            const entered = document.getElementById('inputPasscode').value.trim();
+            if(entered !== currentOffer.code) {
+                alert("Incorrect access code. Please check the code provided by HR (Hint: " + currentOffer.code + ")");
                 return;
             }
 
-            document.getElementById('gate-section').classList.add('hidden');
-            document.getElementById('envelope-section').classList.remove('hidden');
+            document.getElementById('candidate-gate').classList.add('hidden');
+            document.getElementById('candidate-envelope').classList.remove('hidden');
         }
 
-        function openEnvelope() {
+        function openCandidateEnvelope() {
             const envBox = document.getElementById('envelopeBox');
             envBox.classList.add('open');
 
             setTimeout(() => {
-                document.getElementById('envelope-section').classList.add('hidden');
-                document.getElementById('offer-section').classList.remove('hidden');
+                document.getElementById('candidate-envelope').classList.add('hidden');
+                document.getElementById('candidate-letter').classList.remove('hidden');
             }, 700);
         }
 
-        function handleResponse(choice) {
-            document.getElementById('offer-section').classList.add('hidden');
-            document.getElementById('response-section').classList.remove('hidden');
+        function handleCandidateResponse(choice) {
+            document.getElementById('candidate-letter').classList.add('hidden');
+            document.getElementById('candidate-response').classList.remove('hidden');
 
             if(choice === 'accept') {
                 document.getElementById('responseTitle').innerText = "Welcome to the Team! 🎉";
-                document.getElementById('responseDesc').innerText = "Your acceptance has been securely logged. HR will send your setup credentials and onboarding checklist shortly via your primary communication channel.";
+                document.getElementById('responseDesc').innerText = "Your acceptance for " + currentOffer.position + " has been securely logged. HR will send your setup credentials shortly.";
             } else {
                 document.getElementById('responseTitle').innerText = "Discussion Requested 💬";
-                document.getElementById('responseDesc').innerText = "Your request has been forwarded. A talent partner or founder will reach out to schedule a brief alignment call.";
+                document.getElementById('responseDesc').innerText = "Your request has been forwarded. A talent partner will reach out to schedule a brief alignment call.";
             }
         }
-    </script>
 
+        function resetToSender() {
+            activeMode = 'sender';
+            document.getElementById('switchViewBtn').innerText = "Test Candidate View 👁️‍🗨️";
+            document.getElementById('appBrand').innerText = "Crisp Career Gate";
+
+            // Hide all candidate sections
+            document.getElementById('candidate-gate').classList.add('hidden');
+            document.getElementById('candidate-envelope').classList.add('hidden');
+            document.getElementById('candidate-letter').classList.add('hidden');
+            document.getElementById('candidate-response').classList.add('hidden');
+            document.getElementById('envelopeBox').classList.remove('open');
+            document.getElementById('inputPasscode').value = "";
+
+            // Show sender dashboard
+            document.getElementById('sender-dashboard').classList.remove('hidden');
+        }
+    </script>
 </body>
 </html>
