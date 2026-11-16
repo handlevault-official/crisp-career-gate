@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crisp Career Gate | Official Job Offer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #0b0f19;
+            color: #f3f4f6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: #111827;
+            border: 1px solid #1f2937;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brand {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #10b981;
+            margin-bottom: 8px;
+        }
+
+        h1 {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #ffffff;
+        }
+
+        p {
+            color: #9ca3af;
+            font-size: 15px;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        /* Gate Form Section */
+        .gate-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 14px 18px;
+            background: #1f2937;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #10b981;
+        }
+
+        button {
+            background-color: #10b981;
+            color: #0b0f19;
+            font-weight: 600;
+            padding: 14px 18px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        button:hover {
+            background-color: #059669;
+            color: #ffffff;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        /* Envelope / Content Styles */
+        .hidden {
+            display: none !important;
+        }
+
+        .envelope-box {
+            margin: 20px 0;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .envelope {
+            background: #1f2937;
+            border: 2px solid #374151;
+            border-radius: 12px;
+            padding: 40px;
+            transition: transform 0.3s ease;
+        }
+
+        .envelope:hover {
+            border-color: #10b981;
+            transform: translateY(-3px);
+        }
+
+        .envelope-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        /* Offer Letter Content */
+        .offer-content {
+            text-align: left;
+            animation: fadeIn 0.6s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .offer-header {
+            border-bottom: 1px solid #1f2937;
+            padding-bottom: 16px;
+            margin-bottom: 20px;
+        }
+
+        .offer-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #10b981;
+            margin-top: 4px;
+        }
+
+        .offer-body {
+            font-size: 15px;
+            color: #d1d5db;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .offer-body p {
+            margin-bottom: 14px;
+            text-align: left;
+            color: #d1d5db;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 1px solid #374151;
+            color: #f3f4f6;
+        }
+
+        .btn-secondary:hover {
+            background-color: #1f2937;
+            border-color: #4b5563;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- STEP 1: Security & Name Gate -->
+        <div id="gate-section">
+            <div class="brand">Crisp Career Suite</div>
+            <h1>Secure Offer Portal</h1>
+            <p>Please enter your full name or verification code provided by HR to access your official onboarding document.</p>
+            
+            <div class="gate-form">
+                <input type="text" id="candidateName" placeholder="Enter Full Name or Code..." required>
+                <button onclick="unlockOffer()">Unlock Offer Letter 🔓</button>
+            </div>
+        </div>
+
+        <!-- STEP 2: Envelope Reveal (Triggered on unlock) -->
+        <div id="envelope-section" class="hidden">
+            <div class="brand">Crisp Career Suite</div>
+            <h1>Your Offer is Ready</h1>
+            <p>Congratulations, <span id="displayName" style="color: #10b981; font-weight: 600;"></span>! Your secure envelope has been successfully unlocked.</p>
+            
+            <div class="envelope-box" onclick="openLetter()">
+                <div class="envelope">
+                    <div class="envelope-icon">✉️</div>
+                    <h3 style="color: #ffffff; margin-bottom: 6px;">Official Job Offer & Welcome Package</h3>
+                    <p style="margin: 0; font-size: 13px;">Click to view document contents</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 3: The Actual Offer Letter -->
+        <div id="offer-section" class="hidden offer-content">
+            <div class="offer-header">
+                <div class="brand">Official Onboarding Document</div>
+                <div class="offer-title">Position: Senior Remote Developer / Specialist</div>
+            </div>
+            
+            <div class="offer-body">
+                <p>Dear <span id="letterName" style="color: #ffffff; font-weight: 600;"></span>,</p>
+                <p>We are thrilled to officially offer you the position at our organization! Your skills, background, and energy stood out immensely during our evaluation process.</p>
+                <p>Enclosed in this digital suite are your role breakdown, compensation details, and initial onboarding requirements. We are excited to build amazing things together.</p>
+                <p>Please review the details and confirm your acceptance by clicking the button below.</p>
+            </div>
+
+            <div class="actions">
+                <button style="flex: 1;" onclick="alert('Offer Accepted Successfully! Welcome to the team.')">Accept Offer 🚀</button>
+                <button style="flex: 1;" class="btn-secondary" onclick="window.print()">Download PDF</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function unlockOffer() {
+            const nameInput = document.getElementById('candidateName').value.trim();
+            if(nameInput === "") {
+                alert("Please enter your name or code to proceed.");
+                return;
+            }
+
+            document.getElementById('displayName').innerText = nameInput;
+            document.getElementById('letterName').innerText = nameInput;
+
+            document.getElementById('gate-section').classList.add('hidden');
+            document.getElementById('envelope-section').classList.remove('hidden');
+        }
+
+        function openLetter() {
+            document.getElementById('envelope-section').classList.add('hidden');
+            document.getElementById('offer-section').classList.remove('hidden');
+        }
+    </script>
+
+</body>
+</html>
