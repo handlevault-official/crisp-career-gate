@@ -6,16 +6,43 @@
     <title>Crisp Career Gate | Secure Job Offer</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #111827;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border-color: #1f2937;
+            --input-bg: #1f2937;
+            --input-border: #374151;
+            --envelope-flap: #374151;
+            --accent: #10b981;
+            --accent-hover: #059669;
+        }
+
+        .light-mode {
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-main: #111827;
+            --text-muted: #4b5563;
+            --border-color: #e5e7eb;
+            --input-bg: #f9fafb;
+            --input-border: #d1d5db;
+            --envelope-flap: #e5e7eb;
+            --accent: #059669;
+            --accent-hover: #047857;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
             font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
         }
 
         body {
-            background-color: #0b0f19;
-            color: #f3f4f6;
+            background-color: var(--bg-color);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -25,79 +52,99 @@
 
         .container {
             width: 100%;
-            max-width: 620px;
-            background: #111827;
-            border: 1px solid #1f2937;
-            border-radius: 16px;
-            padding: 40px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            max-width: 660px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 45px;
+            box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.3);
             text-align: center;
             position: relative;
             overflow: hidden;
         }
 
+        /* Top Bar Controls */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
         .brand {
             font-size: 13px;
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 2px;
-            color: #10b981;
-            margin-bottom: 8px;
+            color: var(--accent);
+        }
+
+        .theme-toggle {
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent);
         }
 
         h1 {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 700;
-            margin-bottom: 12px;
-            color: #ffffff;
+            margin-bottom: 14px;
+            color: var(--text-main);
         }
 
         p {
-            color: #9ca3af;
-            font-size: 15px;
-            margin-bottom: 24px;
-            line-height: 1.5;
+            color: var(--text-muted);
+            font-size: 17px;
+            margin-bottom: 28px;
+            line-height: 1.6;
         }
 
         /* Gate Form */
         .gate-form {
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 16px;
         }
 
         input[type="text"] {
             width: 100%;
-            padding: 14px 18px;
-            background: #1f2937;
-            border: 1px solid #374151;
-            border-radius: 8px;
-            color: #ffffff;
-            font-size: 15px;
+            padding: 16px 20px;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 10px;
+            color: var(--text-main);
+            font-size: 17px;
             outline: none;
-            transition: border-color 0.2s;
             text-align: center;
         }
 
         input[type="text"]:focus {
-            border-color: #10b981;
+            border-color: var(--accent);
         }
 
         button {
-            background-color: #10b981;
-            color: #0b0f19;
+            background-color: var(--accent);
+            color: #ffffff;
             font-weight: 600;
-            padding: 14px 18px;
+            padding: 16px 20px;
             border: none;
-            border-radius: 8px;
-            font-size: 15px;
+            border-radius: 10px;
+            font-size: 17px;
             cursor: pointer;
             transition: background-color 0.2s, transform 0.1s;
         }
 
         button:hover {
-            background-color: #059669;
-            color: #ffffff;
+            background-color: var(--accent-hover);
         }
 
         button:active {
@@ -106,9 +153,9 @@
 
         /* Animated Mailbox / Envelope Container */
         .envelope-container {
-            margin: 30px auto;
-            width: 200px;
-            height: 130px;
+            margin: 35px auto;
+            width: 220px;
+            height: 140px;
             position: relative;
             cursor: pointer;
             perspective: 1000px;
@@ -118,10 +165,10 @@
             position: absolute;
             bottom: 0;
             width: 100%;
-            height: 100px;
-            background: #1f2937;
-            border: 2px solid #374151;
-            border-radius: 0 0 8px 8px;
+            height: 110px;
+            background: var(--input-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 0 0 10px 10px;
             z-index: 2;
         }
 
@@ -130,8 +177,8 @@
             top: 15px;
             left: 0;
             width: 100%;
-            height: 60px;
-            background: #374151;
+            height: 65px;
+            background: var(--envelope-flap);
             clip-path: polygon(0 0, 50% 100%, 100% 0);
             transform-origin: top;
             transition: transform 0.6s ease-in-out;
@@ -159,46 +206,47 @@
         }
 
         .offer-header {
-            border-bottom: 1px solid #1f2937;
-            padding-bottom: 14px;
-            margin-bottom: 18px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 16px;
+            margin-bottom: 20px;
         }
 
         .offer-title {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 600;
-            color: #10b981;
-            margin-top: 4px;
+            color: var(--accent);
+            margin-top: 6px;
         }
 
         .offer-body {
-            font-size: 14px;
-            color: #d1d5db;
-            line-height: 1.6;
-            margin-bottom: 24px;
+            font-size: 16px;
+            color: var(--text-main);
+            line-height: 1.7;
+            margin-bottom: 28px;
         }
 
         .offer-body p {
-            margin-bottom: 12px;
+            margin-bottom: 16px;
             text-align: left;
-            color: #d1d5db;
+            color: var(--text-main);
+            font-size: 16px;
         }
 
         .actions {
             display: flex;
-            gap: 12px;
+            gap: 14px;
         }
 
         .btn-accept {
-            background-color: #10b981;
-            color: #0b0f19;
+            background-color: var(--accent);
+            color: #ffffff;
             flex: 1;
         }
 
         .btn-decline {
             background-color: transparent;
-            border: 1px solid #374151;
-            color: #9ca3af;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
             flex: 1;
         }
 
@@ -212,11 +260,16 @@
 <body>
 
     <div class="container">
+        <!-- Top Navigation / Theme Toggle -->
+        <div class="top-bar">
+            <div class="brand">Crisp Career Suite</div>
+            <button class="theme-toggle" onclick="toggleTheme()">☀️ / 🌙 Theme</button>
+        </div>
+
         <!-- STEP 1: Passcode / Access Gate -->
         <div id="gate-section">
-            <div class="brand">Crisp Career Suite</div>
             <h1>Secure Offer Portal</h1>
-            <p>Enter your confidential HR Passcode (e.g., <strong>CRISP-2026</strong>) to access your secure career document.</p>
+            <p>Enter your confidential HR Passcode (e.g., <strong>CRISP-2026</strong>) to access your official onboarding document.</p>
             
             <div class="gate-form">
                 <input type="text" id="passcode" placeholder="Enter Access Code..." required>
@@ -226,23 +279,22 @@
 
         <!-- STEP 2: Animated Envelope / Mailbox Reveal -->
         <div id="envelope-section" class="hidden">
-            <div class="brand">Crisp Career Suite</div>
             <h1>Mailbox Unlocked</h1>
             <p>Your official encrypted parcel has arrived. Click the envelope below to open it.</p>
             
             <div class="envelope-container" id="envelopeBox" onclick="openEnvelope()">
                 <div class="envelope-flap"></div>
                 <div class="envelope-body">
-                    <div style="text-align: center; padding-top: 35px; color: #10b981; font-weight: 600; font-size: 13px;">OFFICIAL OFFER</div>
+                    <div style="text-align: center; padding-top: 40px; color: var(--accent); font-weight: 700; font-size: 14px;">OFFICIAL OFFER</div>
                 </div>
             </div>
-            <p style="font-size: 13px; color: #6b7280; margin-top: 10px;">Tap envelope to extract contents</p>
+            <p style="font-size: 14px; color: var(--text-muted); margin-top: 15px;">Tap envelope to extract contents</p>
         </div>
 
         <!-- STEP 3: The Offer Letter with Accept / Decline -->
         <div id="offer-section" class="hidden offer-content">
             <div class="offer-header">
-                <div class="brand">Confidential Onboarding Package</div>
+                <div style="font-size: 13px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Confidential Onboarding Package</div>
                 <div class="offer-title">Position: Senior Core Developer / Tech Lead</div>
             </div>
             
@@ -259,15 +311,18 @@
         </div>
 
         <!-- STEP 4: Success / Response Screen -->
-        <div id="response-section" class="hidden" style="padding: 20px 0;">
-            <div class="brand" id="responseBrand">Status Confirmed</div>
-            <h1 id="responseTitle" style="margin-bottom: 12px;">Thank You!</h1>
-            <p id="responseDesc" style="color: #d1d5db; margin-bottom: 20px;"></p>
-            <button onclick="location.reload()" style="background-color: #1f2937; color: #f3f4f6; border: 1px solid #374151;">Lock Portal Again 🔒</button>
+        <div id="response-section" class="hidden" style="padding: 25px 0;">
+            <h1 id="responseTitle" style="margin-bottom: 14px;">Thank You!</h1>
+            <p id="responseDesc" style="color: var(--text-main); font-size: 17px; margin-bottom: 25px;"></p>
+            <button onclick="location.reload()" style="background-color: var(--input-bg); color: var(--text-main); border: 1px solid var(--border-color);">Lock Portal Again 🔒</button>
         </div>
     </div>
 
     <script>
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+        }
+
         function verifyCode() {
             const code = document.getElementById('passcode').value.trim();
             if(code === "") {
@@ -275,7 +330,6 @@
                 return;
             }
 
-            // Transition to Animated Envelope stage
             document.getElementById('gate-section').classList.add('hidden');
             document.getElementById('envelope-section').classList.remove('hidden');
         }
@@ -284,7 +338,6 @@
             const envBox = document.getElementById('envelopeBox');
             envBox.classList.add('open');
 
-            // Delay slightly for animation effect before showing the letter
             setTimeout(() => {
                 document.getElementById('envelope-section').classList.add('hidden');
                 document.getElementById('offer-section').classList.remove('hidden');
@@ -296,11 +349,9 @@
             document.getElementById('response-section').classList.remove('hidden');
 
             if(choice === 'accept') {
-                document.getElementById('responseBrand').style.color = '#10b981';
                 document.getElementById('responseTitle').innerText = "Welcome to the Team! 🎉";
                 document.getElementById('responseDesc').innerText = "Your acceptance has been securely logged. HR will send your setup credentials and onboarding checklist shortly via your primary communication channel.";
             } else {
-                document.getElementById('responseBrand').style.color = '#f59e0b';
                 document.getElementById('responseTitle').innerText = "Discussion Requested 💬";
                 document.getElementById('responseDesc').innerText = "Your request has been forwarded. A talent partner or founder will reach out to schedule a brief alignment call.";
             }
