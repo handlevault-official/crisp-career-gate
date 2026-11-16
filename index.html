@@ -3,551 +3,482 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crisp Career Gate | All-in-One Offer Portal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Crisp Career Gate — Executive Job Offer & Onboarding</title>
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#0b0f19">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0b0f19;
-            --card-bg: #111827;
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
-            --border-color: #1f2937;
-            --input-bg: #1f2937;
-            --input-border: #374151;
-            --envelope-flap: #374151;
+            --bg-main: #0b0f19;
+            --card-bg: rgba(17, 24, 39, 0.85);
             --accent: #10b981;
-            --accent-hover: #059669;
+            --accent-light: #34d399;
+            --accent-glow: rgba(16, 185, 129, 0.3);
+            --rose: #f43f5e;
+            --border: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --input-bg: rgba(11, 15, 25, 0.8);
         }
 
-        .light-mode {
-            --bg-color: #f3f4f6;
-            --card-bg: #ffffff;
-            --text-main: #111827;
-            --text-muted: #4b5563;
-            --border-color: #e5e7eb;
-            --input-bg: #f9fafb;
-            --input-border: #d1d5db;
-            --envelope-flap: #e5e7eb;
+        [data-theme="light"] {
+            --bg-main: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.95);
             --accent: #059669;
-            --accent-hover: #047857;
+            --accent-light: #047857;
+            --accent-glow: rgba(5, 150, 105, 0.15);
+            --rose: #e11d48;
+            --border: rgba(0, 0, 0, 0.12);
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --input-bg: rgba(241, 245, 249, 0.9);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Inter', sans-serif;
-            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
         }
 
         body {
-            background-color: var(--bg-color);
+            background: var(--bg-main);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            overflow-x: hidden;
         }
 
-        .container {
-            width: 100%;
-            max-width: 700px;
+        .hidden { display: none !important; }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
             background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 8px 14px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+
+        /* --- STEP 1: 3D ENVELOPE --- */
+        .envelope-wrapper {
+            perspective: 1000px;
+            cursor: pointer;
             text-align: center;
+        }
+
+        .envelope {
             position: relative;
+            width: 340px;
+            height: 230px;
+            background: linear-gradient(135deg, #111827, #0b0f19);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            border-radius: 12px;
+            margin: 0 auto 25px auto;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 30px rgba(16, 185, 129, 0.15);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             overflow: hidden;
         }
 
-        .top-bar {
+        .envelope-wrapper:hover .envelope {
+            transform: translateY(-8px) scale(1.02);
+        }
+
+        .flap {
+            position: absolute;
+            top: 0; left: 0; width: 0; height: 0;
+            border-left: 170px solid transparent;
+            border-right: 170px solid transparent;
+            border-top: 130px solid #1f2937;
+            transform-origin: top;
+            transition: transform 0.6s ease;
+            z-index: 3;
+        }
+
+        .envelope.open .flap { transform: rotateX(180deg); z-index: 1; }
+
+        .pocket {
+            position: absolute; bottom: 0; left: 0; width: 0; height: 0;
+            border-left: 170px solid #111827;
+            border-right: 170px solid #111827;
+            border-bottom: 115px solid #161e2e;
+            border-top: 115px solid transparent;
+            z-index: 2;
+        }
+
+        .wax-seal {
+            position: absolute; top: 95px; left: 50%;
+            transform: translateX(-50%);
+            width: 64px; height: 64px;
+            background: radial-gradient(circle at 30% 30%, #34d399, #059669);
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            z-index: 4;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 26px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .envelope.open .wax-seal { opacity: 0; transform: translateX(-50%) scale(0.5); }
+
+        .env-prompt {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            color: var(--accent);
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .env-sub { font-size: 0.85rem; color: var(--text-muted); }
+
+        /* --- STEP 2: STEP-BY-STEP CAREER SCREENING CARD --- */
+        .gate-card {
+            width: 100%;
+            max-width: 500px;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+            animation: slideUp 0.5s ease forwards;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(25px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-indicator {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--accent);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .question-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        .question-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 22px;
+            line-height: 1.5;
+        }
+
+        .form-group { margin-bottom: 18px; }
+
+        input, select {
+            width: 100%;
+            padding: 14px 16px;
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        input:focus, select:focus { border-color: var(--accent); }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-next, .btn-back {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        .btn-next {
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            color: #0b0f19;
+            box-shadow: 0 8px 20px var(--accent-glow);
+        }
+
+        .btn-back {
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+
+        .error-text {
+            color: var(--rose);
+            font-size: 0.82rem;
+            margin-top: 10px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        /* --- STEP 3: OFFICIAL VIP OFFER PASS --- */
+        .vip-pass {
+            width: 100%;
+            max-width: 480px;
+            background: var(--card-bg);
+            border: 2px solid var(--accent);
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 25px 60px rgba(16, 185, 129, 0.2);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: bounceIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes bounceIn {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .success-icon {
+            font-size: 50px;
+            margin-bottom: 12px;
+            animation: pulseIcon 1.5s infinite;
+        }
+
+        @keyframes pulseIcon {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        .vip-pass h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
+            color: var(--accent);
+            margin-bottom: 6px;
+        }
+
+        .ticket-box {
+            background: var(--input-bg);
+            border: 1px dashed var(--border);
+            border-radius: 14px;
+            padding: 18px;
+            margin: 20px 0;
+            text-align: left;
+            font-size: 0.88rem;
+        }
+
+        .ticket-row {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 22px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
         }
 
-        .brand {
-            font-size: 13px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--accent);
-        }
+        .ticket-row:last-child { border-bottom: none; }
+        .t-label { color: var(--text-muted); }
+        .t-val { font-weight: 700; color: var(--text-main); text-align: right; }
 
-        .controls-group {
+        .btn-action-group {
             display: flex;
             gap: 10px;
         }
 
-        .btn-toggle {
-            background: var(--input-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            padding: 8px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 500;
-            cursor: pointer;
-        }
-
-        .btn-toggle:hover {
-            border-color: var(--accent);
-        }
-
-        h1 {
-            font-size: 26px;
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: var(--text-main);
-        }
-
-        p {
-            color: var(--text-muted);
-            font-size: 15px;
-            margin-bottom: 22px;
-            line-height: 1.6;
-        }
-
-        /* Form Layout */
-        .form-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            text-align: left;
-        }
-
-        .field-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .field-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        label {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-muted);
-        }
-
-        input[type="text"], textarea, select {
-            width: 100%;
-            padding: 13px 16px;
-            background: var(--input-bg);
-            border: 1px solid var(--input-border);
-            border-radius: 10px;
-            color: var(--text-main);
-            font-size: 15px;
-            outline: none;
-        }
-
-        input[type="text"]:focus, textarea:focus, select:focus {
-            border-color: var(--accent);
-        }
-
-        textarea {
-            resize: vertical;
-            height: 85px;
-        }
-
-        /* Envelope Styles Selection */
-        .envelope-preview-box {
-            margin: 25px auto;
-            width: 220px;
-            height: 140px;
-            position: relative;
-            cursor: pointer;
-            perspective: 1000px;
-        }
-
-        .envelope-body {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 110px;
-            background: var(--input-bg);
-            border: 2px solid var(--border-color);
-            border-radius: 0 0 10px 10px;
-            z-index: 2;
-        }
-
-        .envelope-flap {
-            position: absolute;
-            top: 15px;
-            left: 0;
-            width: 100%;
-            height: 65px;
-            background: var(--envelope-flap);
-            clip-path: polygon(0 0, 50% 100%, 100% 0);
-            transform-origin: top;
-            transition: transform 0.6s ease-in-out;
-            z-index: 3;
-        }
-
-        .envelope-preview-box.open .envelope-flap {
-            transform: rotateX(180deg);
-            z-index: 1;
-        }
-
-        /* Variant Envelope Themes */
-        .style-mint .envelope-body { border-color: #10b981; }
-        .style-gold .envelope-body { border-color: #f59e0b; }
-        .style-cyber .envelope-body { border-color: #3b82f6; }
-
-        .hidden {
-            display: none !important;
-        }
-
-        .primary-btn {
-            background-color: var(--accent);
-            color: #ffffff;
-            font-weight: 600;
-            padding: 15px;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            width: 100%;
-            transition: background-color 0.2s, transform 0.1s;
-            margin-top: 5px;
-        }
-
-        .primary-btn:hover {
-            background-color: var(--accent-hover);
-        }
-
-        .offer-content {
-            text-align: left;
-            animation: fadeIn 0.6s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .offer-header {
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 16px;
-            margin-bottom: 20px;
-        }
-
-        .offer-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--accent);
-            margin-top: 6px;
-        }
-
-        .offer-body {
-            font-size: 16px;
-            color: var(--text-main);
-            line-height: 1.7;
-            margin-bottom: 28px;
-        }
-
-        .offer-body p {
-            margin-bottom: 16px;
-            text-align: left;
-            color: var(--text-main);
-        }
-
-        .actions {
-            display: flex;
-            gap: 14px;
-        }
-
-        .btn-accept {
-            background-color: var(--accent);
-            color: #ffffff;
+        .btn-action {
             flex: 1;
-            padding: 15px;
-            border-radius: 10px;
+            padding: 13px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            color: #0b0f19;
             border: none;
-            font-weight: 600;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 0.9rem;
             cursor: pointer;
+            box-shadow: 0 8px 20px var(--accent-glow);
         }
 
         .btn-decline {
-            background-color: transparent;
-            border: 1px solid var(--border-color);
-            color: var(--text-muted);
             flex: 1;
-            padding: 15px;
-            border-radius: 10px;
-            font-weight: 600;
+            padding: 13px;
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.9rem;
             cursor: pointer;
         }
 
         .btn-decline:hover {
-            border-color: #ef4444;
-            color: #ef4444;
-        }
-
-        .share-box {
-            background: var(--input-bg);
-            border: 1px dashed var(--border-color);
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 13px;
-            word-break: break-all;
-            margin-top: 12px;
-            color: var(--accent);
-            font-family: monospace;
+            border-color: var(--rose);
+            color: var(--rose);
         }
     </style>
 </head>
-<body>
+<body data-theme="dark">
 
-    <div class="container">
-        <!-- Top Navigation -->
-        <div class="top-bar">
-            <div class="brand" id="appBrand">Crisp Career Gate</div>
-            <div class="controls-group">
-                <button class="btn-toggle" id="navSwitchBtn" onclick="toggleMode()">HR Creator Mode ⚙️</button>
-                <button class="btn-toggle" onclick="toggleTheme()">☀️ / 🌙</button>
-            </div>
+    <button class="theme-toggle" onclick="toggleTheme()">☀️ / 🌙 Theme</button>
+
+    <!-- STEP 1: 3D ENVELOPE -->
+    <div class="envelope-wrapper" id="stepEnvelope" onclick="openEnvelope()">
+        <div class="envelope" id="envelopeObj">
+            <div class="flap"></div>
+            <div class="pocket"></div>
+            <div class="wax-seal">💼</div>
+        </div>
+        <div class="env-prompt">CRISP CAREER GATE</div>
+        <div class="env-sub">Tap wax seal to unlock your official job offer</div>
+    </div>
+
+    <!-- STEP 2: STEP-BY-STEP CAREER SCREENING GATE -->
+    <div class="gate-card hidden" id="stepGate">
+        <div class="step-indicator" id="stepIndicator">Step 1 of 4</div>
+        <div class="question-title" id="qTitle">Candidate Name</div>
+        <div class="question-desc" id="qDesc">Ilagay ang iyong buong pangalan para sa opisyal na onboarding contract.</div>
+
+        <div class="form-group" id="inputContainer">
+            <!-- Dynamically injected input per question -->
         </div>
 
-        <!-- ================= SECTION 1: HR SENDER CREATOR WIZARD ================= -->
-        <div id="sender-wizard">
-            <h1>Package Deal HR Studio</h1>
-            <p>Customize candidate details, theme accent, envelope style, and message below to generate a ready-to-send secure link.</p>
-            
-            <div class="form-grid">
-                <div class="field-row">
-                    <div class="field-group">
-                        <label>Candidate Full Name</label>
-                        <input type="text" id="cfgName" value="Alex Johnson" placeholder="e.g. Maria Santos">
-                    </div>
-                    <div class="field-group">
-                        <label>Position / Role Title</label>
-                        <input type="text" id="cfgRole" value="Senior Remote Developer" placeholder="e.g. UI/UX Lead">
-                    </div>
-                </div>
+        <div class="error-text" id="errorMsg"></div>
 
-                <div class="field-row">
-                    <div class="field-group">
-                        <label>Secret Passcode</label>
-                        <input type="text" id="cfgPass" value="CRISP-2026" placeholder="Passcode for candidate">
-                    </div>
-                    <div class="field-group">
-                        <label>Theme & Envelope Style</label>
-                        <select id="cfgStyle" onchange="previewStyleChange()">
-                            <option value="mint">Startup Mint (#10b981)</option>
-                            <option value="gold">Executive Gold (#f59e0b)</option>
-                            <option value="cyber">Cyber Blue (#3b82f6)</option>
-                        </select>
-                    </div>
-                </div>
+        <div class="btn-group">
+            <button class="btn-back hidden" id="btnBack" onclick="prevStep()">Bumalik</button>
+            <button class="btn-next" id="btnNext" onclick="nextStep()">Susunod ➔</button>
+        </div>
+    </div>
 
-                <div class="field-group">
-                    <label>Personalized Offer Message</label>
-                    <textarea id="cfgMsg">We are thrilled to extend this formal invitation for you to join our core engineering ecosystem. Your technical alignment and execution speed stood out across all evaluation tiers.</textarea>
-                </div>
+    <!-- STEP 3: SUCCESS VIP PASS & OFFER ACCEPTANCE -->
+    <div class="vip-pass hidden" id="stepPass">
+        <div class="success-icon">🚀</div>
+        <h2 id="successHeader">Official Offer Unlocked</h2>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px;">Nakumpleto mo ang secure onboarding verification.</p>
 
-                <button class="primary-btn" onclick="generateOfferLink()">Generate Shareable Candidate Link 🔗</button>
-
-                <!-- Generated Link Display Area -->
-                <div id="linkResultSection" class="hidden" style="margin-top: 15px; text-align: left;">
-                    <label style="color: var(--accent);">Generated Secure Link (Copy & Send to Candidate):</label>
-                    <div class="share-box" id="shareableLinkOutput"></div>
-                    <button class="btn-toggle" style="width: 100%; margin-top: 8px; padding: 10px;" onclick="testGeneratedPortal()">Test This Candidate View 👁️‍🗨️</button>
-                </div>
-            </div>
+        <div class="ticket-box">
+            <div class="ticket-row"><span class="t-label">Candidate Name:</span><span class="t-val" id="resName"></span></div>
+            <div class="ticket-row"><span class="t-label">Role / Position:</span><span class="t-val" id="resRole"></span></div>
+            <div class="ticket-row"><span class="t-label">Start Date:</span><span class="t-val" id="resDate"></span></div>
+            <div class="ticket-row"><span class="t-label">Security Pass:</span><span class="t-val" style="color: var(--accent);" id="resCode"></span></div>
         </div>
 
-
-        <!-- ================= SECTION 2: CANDIDATE RECEIVER VIEW ================= -->
-
-        <!-- Step A: Passcode Gate -->
-        <div id="candidate-gate" class="hidden">
-            <h1>Secure Offer Portal</h1>
-            <p>Hello <span id="viewCandidateName" style="color: var(--accent); font-weight: 600;"></span>. Enter your assigned confidential HR Passcode to unlock your official onboarding document.</p>
-            
-            <div class="form-grid">
-                <input type="text" id="inputCandidatePass" placeholder="Enter Access Code..." style="text-align: center;">
-                <button class="primary-btn" onclick="verifyCandidatePass()">Unlock Secure Mailbox 🔓</button>
-            </div>
+        <div class="btn-action-group">
+            <button class="btn-action" onclick="alert('🎉 Offer Accepted! Welcome to the Crisp ecosystem. HR will email your contract package.')">Accept Offer 🚀</button>
+            <button class="btn-decline" onclick="alert('💬 Request logged. HR will schedule an alignment call with you.')">Discuss 💬</button>
         </div>
-
-        <!-- Step B: Animated Envelope Reveal -->
-        <div id="candidate-envelope" class="hidden">
-            <h1>Mailbox Unlocked</h1>
-            <p>Your official encrypted parcel has arrived. Tap the envelope below to open it.</p>
-            
-            <div class="envelope-preview-box" id="envelopeContainer" onclick="openEnvelopeAnimation()">
-                <div class="envelope-flap"></div>
-                <div class="envelope-body">
-                    <div style="text-align: center; padding-top: 40px; color: var(--accent); font-weight: 700; font-size: 13px;">OFFICIAL OFFER</div>
-                </div>
-            </div>
-            <p style="font-size: 13px; color: var(--text-muted); margin-top: 15px;">Tap envelope to extract contents</p>
-        </div>
-
-        <!-- Step C: The Actual Offer Letter -->
-        <div id="candidate-letter" class="hidden offer-content">
-            <div class="offer-header">
-                <div style="font-size: 13px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Confidential Onboarding Package</div>
-                <div class="offer-title" id="viewRoleTitle">Position: Title</div>
-            </div>
-            
-            <div class="offer-body">
-                <p>Dear <span id="viewLetterName" style="color: var(--text-main); font-weight: 600;"></span>,</p>
-                <p id="viewCustomMessage">Loading offer details...</p>
-                <p>Please review the terms and select your response below to finalize your status.</p>
-            </div>
-
-            <div class="actions">
-                <button class="btn-accept" onclick="handleCandidateAnswer('accept')">Accept Offer 🚀</button>
-                <button class="btn-decline" onclick="handleCandidateAnswer('decline')">Request Discussion 💬</button>
-            </div>
-        </div>
-
-        <!-- Step D: Final Feedback Screen -->
-        <div id="candidate-response" class="hidden" style="padding: 25px 0;">
-            <h1 id="feedbackTitle" style="margin-bottom: 14px;">Thank You!</h1>
-            <p id="feedbackDesc" style="color: var(--text-main); font-size: 16px; margin-bottom: 25px;"></p>
-            <button class="btn-toggle" style="width: 100%; padding: 14px;" onclick="resetToCreator()">Back to HR Creator Studio ⚙️</button>
-        </div>
-
     </div>
 
     <script>
-        // Active configuration payload state
-        let activeConfig = {
-            name: "Alex Johnson",
-            role: "Senior Remote Developer",
-            pass: "CRISP-2026",
-            style: "mint",
-            msg: "We are thrilled to extend this formal invitation for you to join our core engineering ecosystem."
-        };
-
-        // Check on page load if URL has encoded config data
-        window.onload = function() {
-            const hash = window.location.hash;
-            if (hash && hash.startsWith('#data=')) {
-                try {
-                    const jsonString = atob(hash.substring(6));
-                    activeConfig = JSON.parse(jsonString);
-                    applyConfigStyles(activeConfig.style);
-                    loadCandidateView();
-                } catch (e) {
-                    console.error("Failed to parse link data");
-                }
-            }
-        };
-
+        let currentTheme = 'dark';
         function toggleTheme() {
-            document.body.classList.toggle('light-mode');
+            currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.body.setAttribute('data-theme', currentTheme);
         }
 
-        function applyConfigStyles(styleName) {
-            const root = document.documentElement;
-            const envBox = document.getElementById('envelopeContainer');
-            if(envBox) envBox.className = "envelope-preview-box style-" + styleName;
+        let step = 1;
+        let candidateData = { name: '', email: '', role: '', startDate: '' };
 
-            if (styleName === 'gold') {
-                root.style.setProperty('--accent', '#f59e0b');
-                root.style.setProperty('--accent-hover', '#d97706');
-            } else if (styleName === 'cyber') {
-                root.style.setProperty('--accent', '#3b82f6');
-                root.style.setProperty('--accent-hover', '#2563eb');
-            } else {
-                root.style.setProperty('--accent', '#10b981');
-                root.style.setProperty('--accent-hover', '#059669');
+        function openEnvelope() {
+            document.getElementById('envelopeObj').classList.add('open');
+            setTimeout(() => {
+                document.getElementById('stepEnvelope').classList.add('hidden');
+                document.getElementById('stepGate').classList.remove('hidden');
+                renderQuestion();
+            }, 600);
+        }
+
+        function renderQuestion() {
+            document.getElementById('errorMsg').innerText = '';
+            document.getElementById('btnBack').classList.toggle('hidden', step === 1);
+            
+            const totalSteps = 4;
+            document.getElementById('stepIndicator').innerText = `Step ${step} of ${totalSteps} • Career Portal`;
+
+            let title = '', desc = '', html = '';
+
+            if (step === 1) {
+                title = "Anong Buong Pangalan Mo?";
+                desc = "Ilagay ang pangalan na gagamitin sa employment contract.";
+                html = `<input type="text" id="ansVal" placeholder="Juan Dela Cruz" value="${candidateData.name}">`;
+            } else if (step === 2) {
+                title = "Corporate Email Address?";
+                desc = "Dito ipapadala ang iyong secure workspace credentials.";
+                html = `<input type="email" id="ansVal" placeholder="juan@company.com" value="${candidateData.email}">`;
+            } else if (step === 3) {
+                title = "Target Position / Role";
+                desc = "Piliin ang iniaalok na posisyon sa iyo ng HR.";
+                html = `<select id="ansVal">
+                    <option value="">Pili ng posisyon...</option>
+                    <option value="Senior Remote Developer">Senior Remote Developer</option>
+                    <option value="UI/UX Product Designer">UI/UX Product Designer</option>
+                    <option value="Growth & Operations Lead">Growth & Operations Lead</option>
+                    <option value="Core Engineering Specialist">Core Engineering Specialist</option>
+                </select>`;
+            } else if (step === 4) {
+                title = "Kailan ang Gusto Mong Magsimula?";
+                desc = "I-set ang iyong napagkasunduang start date sa kumpanya.";
+                html = `<input type="date" id="ansVal" value="${candidateData.startDate}">`;
+                document.getElementById('btnNext').innerText = "Kumpirmahin at Buksan ang Offer 🎉";
             }
+
+            if(step < 4) document.getElementById('btnNext').innerText = "Susunod ➔";
+
+            document.getElementById('qTitle').innerText = title;
+            document.getElementById('qDesc').innerText = desc;
+            document.getElementById('inputContainer').innerHTML = html;
         }
 
-        function previewStyleChange() {
-            const selectedStyle = document.getElementById('cfgStyle').value;
-            applyConfigStyles(selectedStyle);
-        }
+        function nextStep() {
+            const valElem = document.getElementById('ansVal');
+            const err = document.getElementById('errorMsg');
+            const val = valElem ? valElem.value.trim() : '';
 
-        function generateOfferLink() {
-            activeConfig.name = document.getElementById('cfgName').value.trim() || "Candidate";
-            activeConfig.role = document.getElementById('cfgRole').value.trim() || "Team Member";
-            activeConfig.pass = document.getElementById('cfgPass').value.trim() || "1234";
-            activeConfig.style = document.getElementById('cfgStyle').value;
-            activeConfig.msg = document.getElementById('cfgMsg').value.trim() || "Welcome!";
-
-            const jsonString = JSON.stringify(activeConfig);
-            const encoded = btoa(jsonString);
-            const fullLink = window.location.origin + window.location.pathname + "#data=" + encoded;
-
-            document.getElementById('shareableLinkOutput').innerText = fullLink;
-            document.getElementById('linkResultSection').classList.remove('hidden');
-        }
-
-        function testGeneratedPortal() {
-            applyConfigStyles(activeConfig.style);
-            loadCandidateView();
-        }
-
-        function loadCandidateView() {
-            document.getElementById('viewCandidateName').innerText = activeConfig.name;
-            document.getElementById('viewLetterName').innerText = activeConfig.name;
-            document.getElementById('viewRoleTitle').innerText = "Position: " + activeConfig.role;
-            document.getElementById('viewCustomMessage').innerText = activeConfig.msg;
-
-            // Switch UI
-            document.getElementById('sender-wizard').classList.add('hidden');
-            document.getElementById('linkResultSection').classList.add('hidden');
-            document.getElementById('candidate-gate').classList.remove('hidden');
-            document.getElementById('navSwitchBtn').innerText = "Back to HR Studio ⚙️";
-            document.getElementById('appBrand').innerText = "Crisp Candidate Portal";
-        }
-
-        function verifyCandidatePass() {
-            const entered = document.getElementById('inputCandidatePass').value.trim();
-            if(entered !== activeConfig.pass) {
-                alert("Incorrect passcode. Please check the code provided by HR (Hint: " + activeConfig.pass + ")");
+            if (!val) {
+                err.innerText = "⚠️ Paki-fill up o pumili muna bago tumuloy.";
                 return;
             }
 
-            document.getElementById('candidate-gate').classList.add('hidden');
-            document.getElementById('candidate-envelope').classList.remove('hidden');
-        }
-
-        function openEnvelopeAnimation() {
-            const env = document.getElementById('envelopeContainer');
-            env.classList.add('open');
-
-            setTimeout(() => {
-                document.getElementById('candidate-envelope').classList.add('hidden');
-                document.getElementById('candidate-letter').classList.remove('hidden');
-            }, 700);
-        }
-
-        function handleCandidateAnswer(choice) {
-            document.getElementById('candidate-letter').classList.add('hidden');
-            document.getElementById('candidate-response').classList.remove('hidden');
-
-            if(choice === 'accept') {
-                document.getElementById('feedbackTitle').innerText = "Welcome to the Team! 🎉";
-                document.getElementById('feedbackDesc').innerText = "Your acceptance for " + activeConfig.role + " has been successfully recorded. HR will email your setup credentials shortly.";
-            } else {
-                document.getElementById('feedbackTitle').innerText = "Discussion Requested 💬";
-                document.getElementById('feedbackDesc').innerText = "Your request has been logged. A talent partner will contact you soon to schedule a brief alignment call.";
+            if (step === 1) candidateData.name = val;
+            if (step === 2) candidateData.email = val;
+            if (step === 3) candidateData.role = val;
+            if (step === 4) {
+                candidateData.startDate = val;
+                showSuccess();
+                return;
             }
+
+            step++;
+            renderQuestion();
         }
 
-        function toggleMode() {
-            // Toggle back to sender if currently viewing candidate
-            resetToCreator();
+        function prevStep() {
+            if (step > 1) { step--; renderQuestion(); }
         }
 
-        function resetToCreator() {
-            window.location.hash = ""; // Clear url hash
-            location.reload();
+        function showSuccess() {
+            document.getElementById('stepGate').classList.add('hidden');
+
+            document.getElementById('resName').innerText = candidateData.name;
+            document.getElementById('resRole').innerText = candidateData.role;
+            document.getElementById('resDate').innerText = candidateData.startDate || 'Immediate';
+            document.getElementById('resCode').innerText = 'CRISP-OFFER-' + Math.random().toString(36).substring(2, 7).toUpperCase();
+            
+            document.getElementById('stepPass').classList.remove('hidden');
         }
     </script>
 </body>
